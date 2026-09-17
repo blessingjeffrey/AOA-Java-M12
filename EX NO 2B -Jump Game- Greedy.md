@@ -1,41 +1,25 @@
 
-# EX 2C Job Sequencing using Greedy Approach
+# EX 2B Jump Game using Greedy Algorithm.
 ## AIM:
 To write a Java program to for given constraints.
-Given an integer array nums and an integer k, return the number of pairs (i, j) where i < j such that |nums[i] - nums[j]| == k.
+You are given an array of integers. Each number represents the maximum number of steps you can jump forward from that position.
 
-The value of |x| is defined as:
+You start from the first element (index 0). 
+Write a program to find the minimum number of jumps required to reach the last index of the array.
 
-x if x >= 0.
--x if x < 0.You're given N jobs, each with:
-
-A unique jobId
-
-A deadline (by which it must be completed)
-
-A profit (earned only if completed on or before the deadline)
-
-Each job:
-
-Takes exactly 1 unit of time
-
-Only one job can be done at a time
-
-Your goal is to maximize total profit while completing the maximum number of jobs possible within their deadlines.
-
+If it is not possible to reach the end, return -1.
 ## Algorithm
-1. Sort all jobs in decreasing order of profit.
+1. If the array length is ≤ 1 or the first element is 0, return -1 (cannot move).
 
-2. Find the maximum deadline among all jobs to determine the number of time slots needed.
+2. Initialize three variables: far = 0 → farthest index reachable, end = 0 → end of current jump range, jump = 0 → number of jumps made
 
-3. Create a boolean array slot[] of size maxDeadline + 1 to track free time slots.
+3. Loop from i = 0 to n - 2 and update far = max(far, i + nums[i]).
 
-4. Initialize count = 0 (jobs done) and totalProfit = 0.
+4. When i reaches end, increment jump and update end = far.
 
-5. For each job in sorted order, try to assign it to the latest free slot before its deadline. if a free slot is found, mark it, increase count, and add the job’s
-   profit.
+5. After updating, if end >= n - 1, break the loop (last index reachable).
 
-6. After processing all jobs, return {count, totalProfit}.
+6. Return jump if end reaches last index, otherwise return -1. 
 
 ## Program:
 ```
@@ -44,63 +28,50 @@ Program to implement Reverse a String
 Developed by: MUKESH R
 Register Number: 212223240100
 */
-import java.util.*;
+import java.util.Scanner;
 
-public class JobScheduling {
+public class MinJumpToEnd {
 
-    static class Job {
-        int id, deadline, profit;
-        Job(int id, int deadline, int profit) {
-            this.id = id;
-            this.deadline = deadline;
-            this.profit = profit;
-        }
-    }
-
-    public static int[] jobScheduling(Job[] jobs, int n) {
-        Arrays.sort(jobs, (a, b) -> b.profit - a.profit);
-
-        int maxDeadline = 0;
-        for (Job job : jobs) maxDeadline = Math.max(maxDeadline, job.deadline);
-
-        boolean[] slot = new boolean[maxDeadline + 1];
-        int count = 0, totalProfit = 0;
-
-        for (Job job : jobs) {
-            for (int j = job.deadline; j > 0; j--) {
-                if (!slot[j]) {
-                    slot[j] = true;
-                    count++;
-                    totalProfit += job.profit;
+   
+    public static int minimumJumps(int[] nums) {
+        if(nums.length<=1) return -1;
+        if(nums[0]==0) return -1;
+        int far=0,jump=0,end=0;
+        for (int i =0;i<nums.length-1;i++)
+        {
+            far=Math.max(far,i+nums[i]);
+            if(i==end)
+            {
+                jump++;
+                end=far;
+                if(end>=nums.length-1) {
                     break;
                 }
+                if(end==i) return -1;
             }
         }
-
-        return new int[]{count, totalProfit};
+     return end>=nums.length-1?jump:-1;  
     }
 
+   
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        Job[] jobs = new Job[n];
+        int n = sc.nextInt(); // Number of elements
+        int[] nums = new int[n];
 
         for (int i = 0; i < n; i++) {
-            int id = sc.nextInt();
-            int deadline = sc.nextInt();
-            int profit = sc.nextInt();
-            jobs[i] = new Job(id, deadline, profit);
+            nums[i] = sc.nextInt();
         }
 
-        int[] result = jobScheduling(jobs, n);
-        System.out.println(result[0] + " " + result[1]);
+        System.out.println("Minimum jumps to reach last index: " + minimumJumps(nums));
     }
 }
+
 ```
 
 ## Output:
 
-<img width="365" height="501" alt="image" src="https://github.com/user-attachments/assets/8d4d8525-ad30-4bcb-8e04-a582c6240662" />
+<img width="876" height="407" alt="image" src="https://github.com/user-attachments/assets/9f8663a0-659d-4beb-ab18-f9293bd44ea0" />
 
 
 ## Result:
