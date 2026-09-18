@@ -31,8 +31,6 @@ Output: Pattern found at index 0, Pattern found at index 9, Pattern found at ind
 ```
 /*
 Program to implement Reverse a String
-Developed by: MUKESH R
-Register Number: 212223240100
  */
 import java.util.Scanner;
 
